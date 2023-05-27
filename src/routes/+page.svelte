@@ -1,7 +1,8 @@
 <script lang="ts">
 	const links = ['https://tailwindcss.com/', 'https://svelte.dev/', 'https://heroicons.com/'];
-	let count = 0;
 	let openLinksInNewTab = true;
+
+	let count = 0;
 </script>
 
 <div class="p-4 rounded-lg border">
@@ -25,6 +26,7 @@
 			on:click={() => (count = count + 1)}
 			class="ml-1 w-32 flex bg-purple-500 p-1 rounded-lg border-purple-300 border"
 		>
+			<!-- Hero Icons -->
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				fill="none"
