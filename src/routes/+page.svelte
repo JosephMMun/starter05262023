@@ -1,5 +1,6 @@
 
 <script lang="ts">
+
 	type Activity = {
 		endTime: number;
 		startTime: number;
@@ -7,38 +8,49 @@
 		totalTime: number;
 	}
 
+	const localStorageKey = 'activities';
 	let activityFomLocalstorage = localStorage.getItem("activities");
-	let activity: Activity = JSON.parse(activityFomLocalstorage  ?? "{}");
+	let activities: Activity[] = JSON.parse(activityFomLocalstorage  ?? "[]");
 
-	function startActivity(){
-		activity.startTime = new Date().valueOf();
-		localStorage.setItem('activities', JSON.stringify(activity))
+	function addActivity(){
+		activities = [...activities, {startTime: 0, endTime: 0, totalTime: 0, name: ""}]
 	}
 
-	function endActivity(){
-		activity.endTime = new Date().valueOf();
-		activity.totalTime = activity.endTime-activity.startTime;
-		localStorage.setItem('activities', JSON.stringify(activity))
+	function startActivity(index: number){
+		activities[index].startTime = new Date().valueOf()
+		activities = activities;
+		localStorage.setItem(localStorageKey, JSON.stringify(activities))
 	}
 
-	let count = 0;
-	function updatecount(){
-		count += 5;
+	function endActivity(index: number){
+		activities[index].endTime = new Date().valueOf();
+		activities[index].totalTime = activities[index].endTime-activities[index].startTime;
+		activities = activities;
+		localStorage.setItem(localStorageKey, JSON.stringify(activities))
+
 	}
+
+	// hint: try using the javascript slice method to do array manipulation; phind.com is your friend!
+	function deleteActivity(index: number){
+
+	}
+
+
 </script>
-
+<button on:click={addActivity}>Add Activity</button>
+{#each activities as activity, index (activity)}
 <div>
 	Activity Name
 	<input bind:value={activity.name}>
-	<button on:click={startActivity} >Start</button>
-	<button on:click={endActivity} >End</button>
 
-	<!-- {activity.startTime}
-	{activity.endTime} -->
+	<!--To only show one button at a time, you can look into svelte if statements-->
+	<button on:click={() => startActivity(index)} >Start</button>
+	<button on:click={() => endActivity(index)} >End</button>
+
 	{(activity.totalTime / 1000).toFixed(2)}
 </div>
+{/each}
 
-{JSON.stringify(activity, null, 2)}
 
 <style lang="postcss">
 	input{
